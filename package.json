@@ -40,7 +40,7 @@
     },
     "scripts": {
         "start": "set PORT=2000 && react-scripts --openssl-legacy-provider start",
-        "build": "npm install --legacy-peer-deps && echo 'Build script completed'",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
