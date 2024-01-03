@@ -8,7 +8,7 @@ import Cars from "../Pages/Owner/Cars";
 import AddCar from "../Pages/Owner/AddCar";
 import Profile from "../Pages/Owner/Profile";
 import Booking from "../Pages/Owner/Bookings";
-import Chat from "../Pages/Owner/Chat";
+// import Chat from "../Pages/Owner/Chat";
 import E404 from "../Components/Common/E404/E404";
 
 function OwnerRoute() {
@@ -23,7 +23,7 @@ function OwnerRoute() {
                 <Route path='/add-car' element={IsAuth ? <AddCar/>:<Navigate to='/owner/login'/>}/>    
                 <Route path='/profile' element={IsAuth ? <Profile/>:<Navigate to='/owner/login'/>}/>   
                 <Route path='/bookings' element={IsAuth ? <Booking/>:<Navigate to='/owner/login'/>}/> 
-                <Route path="/chat" element= {IsAuth ? <Chat /> : <Navigate to='/login'/>}/>
+                <Route path="/chat" element= {IsAuth ? '' : <Navigate to='/login'/>}/>
                 <Route path='*' element={<E404 link={'/owner'}/>}/>
             </Routes>
         </div>

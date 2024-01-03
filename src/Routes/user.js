@@ -10,7 +10,7 @@ import Bookings from "../Pages/Clients/Bookings";
 import BookingSuccess from "../Pages/Clients/BookingSuccess";
 import BookingDetail from "../Pages/Clients/BookingDetail";
 import Profile from "../Pages/Clients/Profile";
-import Chat from "../Pages/Clients/Chat";
+// import Chat from "../Pages/Clients/Chat";
 import E404 from "../Components/Common/E404/E404";
 import OTP from "../Pages/Clients/OTP";
 function UserRoute() {
@@ -28,7 +28,7 @@ function UserRoute() {
                 <Route path="/success" element= {IsAuth ? <BookingSuccess /> : <Navigate to='/login'/>}/>  
                 <Route path="/bookingDetail" element= {IsAuth ? <BookingDetail /> : <Navigate to='/login'/>}/>  
                 <Route path="/profile" element= {IsAuth ? <Profile /> : <Navigate to='/login'/>}/>
-                <Route path="/chat" element= {IsAuth ? <Chat /> : <Navigate to='/login'/>}/>
+                <Route path="/chat" element= {IsAuth ? '' : <Navigate to='/login'/>}/>
                 <Route path='*' element={<E404 link={'/'}/>}/>
             </Routes>
         </div>
