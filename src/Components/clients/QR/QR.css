@@ -1,0 +1,36 @@
+.success-image {
+    width: 100%;
+    max-width: 400px;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .scan-again-button {
+    display: flex;
+    justify-content: center;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto; /* Set both top and bottom margins to auto to center the button vertically */
+  }
+  
+  .scan-again-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Media query for responsiveness */
+  @media (max-width: 768px) {
+    .scan-again-container {
+      height: auto;
+      padding: 20px;
+    }
+  
+    .scan-again-button {
+      margin: 10px auto;
+    }
+  }
+  
