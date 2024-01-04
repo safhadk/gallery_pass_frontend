@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { QrReader } from 'react-qr-reader';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from "../../../Axios/userAxios.js";
 import { Toast } from '../../../Helper/Toast.js';
+import { Html5Qrcode } from 'html5-qrcode';
 import './QR.css';
 
 const QRScanner = () => {
@@ -9,17 +9,44 @@ const QRScanner = () => {
   const [scanError, setScanError] = useState(null);
   const [scanMessage, setScanMessage] = useState(null);
   const [isScannerEnabled, setScannerEnabled] = useState(true);
+  const readerRef = useRef(null);
+
+  useEffect(() => {
+    const initializeQRCodeScanner = async () => {
+      if (readerRef.current) {
+        try {
+          const qrcode = new Html5Qrcode(readerRef.current);
+
+          qrcode.start(
+            (decodedText, decodedResult) => {
+              handleScan(decodedText);
+            },
+            (error) => {
+              console.error('Scan error:', error);
+              handleError(error);
+            }
+          );
+
+          return () => {
+            qrcode.stop(); // Clean up when component unmounts
+          };
+        } catch (error) {
+          console.error('Error initializing QR code scanner:', error);
+        }
+      }
+    };
+
+    initializeQRCodeScanner();
+  }, [readerRef]);
 
   const handleScan = (result) => {
     if (result && isScannerEnabled) {
       setScannerEnabled(false);
 
-      axios.post('/scan', { qrCode: result }, {
-      
-      })
+      axios.post('/scan', { qrCode: result })
         .then((response) => {
-          console.log(response,"res")
-          console.log(response.data,"data")
+          console.log(response, "res");
+          console.log(response.data, "data");
           console.log('Backend Response:', response.data.message);
 
           if (response.data.message !== 'QR code already scanned') {
@@ -28,8 +55,6 @@ const QRScanner = () => {
               icon: "success",
               title: "Pass successful",
             });
-
-            playBeepSound();
           } else {
             setScanError(null);
             setScanMessage('QR code already scanned');
@@ -50,11 +75,6 @@ const QRScanner = () => {
     }
   };
 
-  const playBeepSound = () => {
-    const beepSound = new Audio('/safad/beep.mp3');
-    beepSound.play();
-  };
-
   const handleError = (error) => {
     console.error('Camera Error:', error);
     setScanError('Camera Error');
@@ -72,11 +92,7 @@ const QRScanner = () => {
   return (
     <div className="result-container">
       {!scanMessage && (
-        <QrReader
-          onResult={handleScan}
-          onError={handleError}
-          style={{ display: 'block', width: '100%' }}
-        />
+        <div id="reader" ref={readerRef} style={{ display: 'block', width: '100%' }} />
       )}
       {scanMessage && (
         <>
@@ -85,7 +101,6 @@ const QRScanner = () => {
             alt={scanMessage}
             className="success-image"
           />
-          {/* <p>{scanMessage}</p> */}
           <button className="scan-again-button" onClick={handleScanAgain}>
             Scan Again
           </button>
