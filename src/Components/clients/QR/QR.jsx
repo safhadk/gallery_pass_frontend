@@ -15,9 +15,7 @@ const QRScanner = () => {
       setScannerEnabled(false);
 
       axios.post('/scan', { qrCode: result }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      
       })
         .then((response) => {
           console.log('Backend Response:', response.data.message);
