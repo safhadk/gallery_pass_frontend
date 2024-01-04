@@ -18,6 +18,8 @@ const QRScanner = () => {
       
       })
         .then((response) => {
+          console.log(response,"res")
+          console.log(response.data,"data")
           console.log('Backend Response:', response.data.message);
 
           if (response.data.message !== 'QR code already scanned') {
