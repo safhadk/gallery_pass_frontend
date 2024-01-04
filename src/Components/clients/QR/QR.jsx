@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import axios from "../../../Axios/userAxios.js";
-import { Toast } from '../../../Helper/Toast.js';
-import { Html5Qrcode } from 'html5-qrcode';
+// QR.jsx
+import React, { useState } from 'react';
+import { QrReader } from 'react-qr-reader';
+import axios from "../../../Axios/userAxios.js"; // Assuming your Axios configuration is in this file
+import { Toast } from '../../../Helper/Toast.js'; // Assuming your Toast component is in this file
 import './QR.css';
 
 const QRScanner = () => {
@@ -9,35 +10,7 @@ const QRScanner = () => {
   const [scanError, setScanError] = useState(null);
   const [scanMessage, setScanMessage] = useState(null);
   const [isScannerEnabled, setScannerEnabled] = useState(true);
-  const readerRef = useRef(null);
-
-  useEffect(() => {
-    const initializeQRCodeScanner = async () => {
-      if (readerRef.current) {
-        try {
-          const qrcode = new Html5Qrcode(readerRef.current);
-
-          qrcode.start(
-            (decodedText, decodedResult) => {
-              handleScan(decodedText);
-            },
-            (error) => {
-              console.error('Scan error:', error);
-              handleError(error);
-            }
-          );
-
-          return () => {
-            qrcode.stop(); // Clean up when component unmounts
-          };
-        } catch (error) {
-          console.error('Error initializing QR code scanner:', error);
-        }
-      }
-    };
-
-    initializeQRCodeScanner();
-  }, [readerRef]);
+  const [currentFacingMode, setCurrentFacingMode] = useState('environment'); // Initialize with back camera
 
   const handleScan = (result) => {
     if (result && isScannerEnabled) {
@@ -45,8 +18,6 @@ const QRScanner = () => {
 
       axios.post('/scan', { qrCode: result })
         .then((response) => {
-          console.log(response, "res");
-          console.log(response.data, "data");
           console.log('Backend Response:', response.data.message);
 
           if (response.data.message !== 'QR code already scanned') {
@@ -55,8 +26,8 @@ const QRScanner = () => {
               icon: "success",
               title: "Pass successful",
             });
+            playBeepSound();
           } else {
-            setScanError(null);
             setScanMessage('QR code already scanned');
             Toast.fire({
               icon: "error",
@@ -68,11 +39,17 @@ const QRScanner = () => {
         })
         .catch((error) => {
           console.error('Error during scan processing:', error);
+          setScanError(error.message); // Display a user-friendly error message
         })
         .finally(() => {
           setScannerEnabled(true);
         });
     }
+  };
+
+  const playBeepSound = () => {
+    const beepSound = new Audio('/safad/beep.mp3'); // Ensure this path is correct
+    beepSound.play();
   };
 
   const handleError = (error) => {
@@ -89,10 +66,20 @@ const QRScanner = () => {
     setScannerEnabled(true);
   };
 
+  const handleCameraSwitch = () => {
+    setCurrentFacingMode(currentFacingMode === 'environment' ? 'user' : 'environment');
+  };
+
   return (
     <div className="result-container">
       {!scanMessage && (
-        <div id="reader" ref={readerRef} style={{ display: 'block', width: '100%' }} />
+        <QrReader
+          facingMode={currentFacingMode}
+          delay={300}
+          onResult={handleScan}
+          onError={handleError}
+          style={{ display: 'block', width: '100%' }}
+        />
       )}
       {scanMessage && (
         <>
@@ -106,6 +93,9 @@ const QRScanner = () => {
           </button>
         </>
       )}
+      <button onClick={handleCameraSwitch} className="crazy-button">
+  Switch Camera
+</button>
     </div>
   );
 };

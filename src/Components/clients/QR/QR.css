@@ -33,4 +33,35 @@
       margin: 10px auto;
     }
   }
+
+
+
+
+  /* QR.css */
+.crazy-button {
+  display: inline-block; /* Ensure proper layout */
+  padding: 10px 20px; /* Adjust for desired size */
+  background-color: #4CAF50; /* Green background */
+  color: #fff; /* White text */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Shadow effect */
+  cursor: pointer; /* Indicate interactivity */
+  font-family: sans-serif; /* Clean font */
+  font-weight: bold; /* Bold text */
+  text-transform: uppercase; /* All caps for emphasis */
+  transition: all 0.2s ease-in-out; /* Smooth transitions */
+}
+
+.crazy-button:hover {
+  background-color: #3e8e41; /* Darker green on hover */
+  transform: translateY(-2px); /* Subtle hover effect */
+}
+
+/* Optional: Focus state */
+.crazy-button:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow on focus */
+}
+
   
