@@ -1,8 +1,7 @@
-// QR.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { QrReader } from 'react-qr-reader';
-import axios from "../../../Axios/userAxios.js"; // Assuming your Axios configuration is in this file
-import { Toast } from '../../../Helper/Toast.js'; // Assuming your Toast component is in this file
+import axios from "../../../Axios/userAxios.js";
+import { Toast } from '../../../Helper/Toast.js';
 import './QR.css';
 
 const QRScanner = () => {
@@ -11,6 +10,19 @@ const QRScanner = () => {
   const [scanMessage, setScanMessage] = useState(null);
   const [isScannerEnabled, setScannerEnabled] = useState(true);
   const [currentFacingMode, setCurrentFacingMode] = useState('environment'); // Initialize with back camera
+
+  useEffect(() => {
+    // Request back camera access on component mount
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+      .then(() => {
+        // Camera access granted, proceed normally
+      })
+      .catch((err) => {
+        // Handle camera access errors
+        console.error('Camera error:', err);
+        setScanError('Could not access back camera.'); // Inform the user
+      });
+  }, []);
 
   const handleScan = (result) => {
     if (result && isScannerEnabled) {
@@ -74,7 +86,7 @@ const QRScanner = () => {
     <div className="result-container">
       {!scanMessage && (
         <QrReader
-          facingMode={currentFacingMode}
+          facingMode={currentFacingMode} // Dynamically set facingMode
           delay={300}
           onResult={handleScan}
           onError={handleError}
@@ -94,8 +106,8 @@ const QRScanner = () => {
         </>
       )}
       <button onClick={handleCameraSwitch} className="crazy-button">
-  Switch Camera
-</button>
+        Switch Camera
+      </button>
     </div>
   );
 };
