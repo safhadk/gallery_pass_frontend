@@ -47,7 +47,7 @@ const QRScanner = () => {
   };
 
   const playBeepSound = () => {
-    const beepSound = new Audio('\public\safad\beep.mp3');
+    const beepSound = new Audio('/safad/beep.mp3');
     beepSound.play();
   };
 
