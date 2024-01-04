@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { QrReader } from 'react-qr-reader';
-import axios from '../../../Axios/userAxios.js';
+import axios from 'axios'; // Update import path for Axios
 import { Toast } from '../../../Helper/Toast.js';
 import './QR.css';
 
@@ -14,7 +14,11 @@ const QRScanner = () => {
     if (result && isScannerEnabled) {
       setScannerEnabled(false);
 
-      axios.post('https://royalcars-server.vercel.app/scan', { qrCode: result })
+      axios.post('scan', { qrCode: result }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
         .then((response) => {
           console.log('Backend Response:', response.data.message);
 
