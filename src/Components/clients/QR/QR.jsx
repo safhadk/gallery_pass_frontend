@@ -14,7 +14,7 @@ const QRScanner = () => {
     if (result && isScannerEnabled) {
       setScannerEnabled(false);
 
-      axios.post('scan', { qrCode: result }, {
+      axios.post('/scan', { qrCode: result }, {
       
       })
         .then((response) => {
