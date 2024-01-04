@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { QrReader } from 'react-qr-reader';
-import axios from 'axios'; // Update import path for Axios
+import axios from "../../../Axios/userAxios.js";
 import { Toast } from '../../../Helper/Toast.js';
 import './QR.css';
 
