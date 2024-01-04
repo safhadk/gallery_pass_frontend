@@ -14,7 +14,7 @@ const QRScanner = () => {
     if (result && isScannerEnabled) {
       setScannerEnabled(false);
 
-      axios.post('/scan', { qrCode: result })
+      axios.post('https://royalcars-server.vercel.app/scan', { qrCode: result })
         .then((response) => {
           console.log('Backend Response:', response.data.message);
 
