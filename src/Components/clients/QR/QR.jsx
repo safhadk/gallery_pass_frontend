@@ -51,7 +51,7 @@ const QRScanner = () => {
         })
         .catch((error) => {
           console.error('Error during scan processing:', error);
-          setScanError(error.message); // Display a user-friendly error message
+          setScanError('Error:',error.message); // Display a user-friendly error message
         })
         .finally(() => {
           setScannerEnabled(true);
